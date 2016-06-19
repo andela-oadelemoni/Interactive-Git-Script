@@ -15,8 +15,10 @@ fi
 modified=$(git status -s 2> /dev/null | sed 's/[M\?{2}]//g' 2> /dev/null)
 if [ -z "$modified" ]
 then
-	echo "You have no changes to this repository"
-	exit 0
+	echo "##############################################"
+        echo "## There are no changes to this repository! ##"
+        echo "##############################################"
+        exit 0	
 else
 	echo "Nice changes bro. Time to commit"
 	printf "%s\n" $modified
