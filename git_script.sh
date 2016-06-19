@@ -12,7 +12,7 @@ then
 fi
 
 # Next step is to check if there are modified files in the repo
-modified=$(git status -s 2> /dev/null | sed 's/[M\?{2}]//g' 2> /dev/null)
+modified=$(git status -s 2> /dev/null | sed 's/[M\?{2}]//g' )
 if [ -z "$modified" ]
 then
 	echo "##############################################"
@@ -28,11 +28,18 @@ fi
 # Define needed functions for the 'git add' stage
 
 function interactive_add {
-        echo "Welcome to interactive Add funciton"
+	for file in ${modified[@]}
+	do
+		read -p "Add $file to staging? [y/n]: " addyn
+		case $addyn in
+		  [Yy]* ) git add $file;;
+		  [Nn]* ) ;;
+		esac
+	done
 }
 
 function add_all {
-        echo "Add all function...Nice one!"
+	git add --all
 }
 
 function commit {
