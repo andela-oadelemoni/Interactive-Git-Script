@@ -19,18 +19,31 @@ then
         echo "## There are no changes to this repository! ##"
         echo "##############################################"
         exit 0	
-else
-	echo "Nice changes bro. Time to commit"
-	printf "%s\n" $modified
+#else
+#	echo "Nice changes bro. Time to commit"
+#	printf "%s\n" $modified
 fi
 
+# Next prompt user to 'git add' all or 'git add' selectively
+# Define needed functions for the 'git add' stage
 
-#read -p "Please enter your name: " name 
-#echo The name you entered is $name
+function interactive_add {
+        echo "Welcome to interactive Add funciton"
+}
 
-#case $name in
-# [Kk]* )  echo Are you Kamiye?;;
-# [Oo]* ) echo Are you Oluwakamie?;;
-# [Aa]* ) echo Are you Ashekhame?;;
-#esac
+function add_all {
+        echo "Add all function...Nice one!"
+}
+
+function commit {
+        echo "Now it is time to commit some changes"
+}
+
+read -p "Do you wish to add all unstaged files? [y/n]: " yn 
+
+case $yn in
+ [Yy]* ) add_all; commit;;
+ [Nn]* ) interactive_add;;
+esac
+
 
