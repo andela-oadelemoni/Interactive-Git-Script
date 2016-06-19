@@ -26,11 +26,14 @@ fi
 
 # Next prompt user to 'git add' all or 'git add' selectively
 # Define needed functions for the 'git add' stage
+# Define special colours needed
+COLOUR='\033[1;33m'
+END='\033[0m'
 
 function interactive_add {
 	for file in ${modified[@]}
 	do
-		read -p "Add $file to staging? [y/n]: " addyn
+		read -p "Add $(echo -e ${COLOUR}$file${END}) to staging? [y/n]: " addyn
 		case $addyn in
 		  [Yy]* ) git add $file;;
 		  [Nn]* ) ;;
