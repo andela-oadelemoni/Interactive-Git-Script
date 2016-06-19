@@ -5,7 +5,9 @@
 repo_check=$(git status 2>&1 /dev/null | grep 'Not a git repository')
 if [ -n "$repo_check" ]
 then
-	echo "This is not a git repository"
+	echo "###################################"
+	echo "## This is not a git repository! ##"
+	echo "###################################"
 	exit 0
 fi
 
