@@ -31,7 +31,18 @@ RED='\033[0;31m'
 END='\033[0m'
 
 function push {
-	echo "Do you wish to push :)"
+	read -p "Do you want to push to a remote branch? [y/n]: " pushOption
+	case $pushOption in
+	  [Yy]* ) read -e -p "Enter name of branch: " branch;;
+	  [Nn]* ) exit 0;;
+	esac
+	
+	if [ -z "$branch" ]
+	then
+		push
+	else
+		git push origin "$branch"
+	fi
 }
 
 function commit {
@@ -68,5 +79,8 @@ case $yn in
  [Yy]* ) add_all; commit;;
  [Nn]* ) interactive_add;;
 esac
+
+# Next is to ask the user if they'd like to push to a remote branch
+# And prompt them for the branch
 
 
