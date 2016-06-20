@@ -1,5 +1,3 @@
-#!/bin/bash
-# Use this script to write commit messages
 
 # First check if the directory is a git repo
 repo_check=$(git status 2>&1 /dev/null | grep 'Not a git repository')
@@ -27,26 +25,40 @@ fi
 # Next prompt user to 'git add' all or 'git add' selectively
 # Define needed functions for the 'git add' stage
 # Define special colours needed
-COLOUR='\033[1;33m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
 END='\033[0m'
+
+function push {
+	echo "Do you wish to push :)"
+}
+
+function commit {
+        read -p "Enter your commit message: " msg
+        if [ -z "$msg" ]
+        then
+                echo -e "${RED}You know commit message shouldn't be empty right?${END}"
+                commit
+        else
+                git commit -m "$msg"
+        fi
+	push
+}
 
 function interactive_add {
 	for file in ${modified[@]}
 	do
-		read -p "Add $(echo -e ${COLOUR}$file${END}) to staging? [y/n]: " addyn
+		read -p "Add $(echo -e ${YELLOW}$file${END}) to staging? [y/n]: " addyn
 		case $addyn in
 		  [Yy]* ) git add $file;;
 		  [Nn]* ) ;;
 		esac
 	done
+	commit
 }
 
 function add_all {
 	git add --all
-}
-
-function commit {
-        echo "Now it is time to commit some changes"
 }
 
 read -p "Do you wish to add all unstaged files? [y/n]: " yn 
