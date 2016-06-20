@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # First check if the directory is a git repo
 repo_check=$(git status 2>&1 /dev/null | grep 'Not a git repository')
@@ -34,7 +35,7 @@ function push {
 }
 
 function commit {
-        read -p "Enter your commit message: " msg
+        read -e -p "Enter your commit message: " msg
         if [ -z "$msg" ]
         then
                 echo -e "${RED}You know commit message shouldn't be empty right?${END}"
