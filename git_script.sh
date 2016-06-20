@@ -14,7 +14,7 @@ then
 fi
 
 # Next step is to check if there are modified files in the repo
-modified=$(git status -s 2> /dev/null | sed 's/[M\?{2}]//g' )
+modified=$(git status -s 2> /dev/null | sed -E 's/^.{2}//g')
 if [ -z "$modified" ]
 then
 	echo "##############################################"
