@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "===================================="
 echo "=========== Script Starts =========="
 
 # First check if the directory is a git repo
@@ -20,9 +21,6 @@ then
         echo "## There are no changes to this repository! ##"
         echo "##############################################"
         exit 0	
-#else
-#	echo "Nice changes bro. Time to commit"
-#	printf "%s\n" $modified
 fi
 
 # Next prompt user to 'git add' all or 'git add' selectively
@@ -36,7 +34,8 @@ function push {
 	read -p "Do you want to push to a remote branch? [y/n]: " pushOption
 	case $pushOption in
 	  [Yy]* ) read -e -p "Enter name of branch: " branch;;
-	  [Nn]* ) echo "=========== Script Ends ==========";exit 0;;
+	  [Nn]* ) echo "===========  Script Ends  ==========";
+		echo "===================================="exit 0;;
 	esac
 	
 	if [ -z "$branch" ]
@@ -44,7 +43,8 @@ function push {
 		push
 	else
 		git push origin "$branch"
-		echo "=========== Script Ends =========="
+		echo "===========  Script Ends  =========="
+		echo "===================================="
 	fi
 }
 
@@ -60,28 +60,41 @@ function commit {
 	push
 }
 
+function show_added_files {
+	echo "Added files:"
+	param=("${@}")
+	for file in ${param[@]}
+	do
+		echo -e "${YELLOW}$file${END}"
+	done
+}
+
 function interactive_add {
+	added=()
 	for file in ${modified[@]}
 	do
 		read -p "Add $(echo -e ${YELLOW}$file${END}) to staging? [y/n]: " addyn
 		case $addyn in
-		  [Yy]* ) git add $file;;
+		  [Yy]* ) git add $file; added+=($file);;
 		  [Nn]* ) ;;
 		esac
 	done
-	commit
+	show_added_files ${added[@]}
 }
 
 function add_all {
 	git add --all
+	show_added_files $modified
 }
 
 read -p "Do you wish to add all unstaged files? [y/n]: " yn 
 
 case $yn in
- [Yy]* ) add_all; commit;;
+ [Yy]* ) add_all;;
  [Nn]* ) interactive_add;;
 esac
+
+commit
 
 # Next is to ask the user if they'd like to push to a remote branch
 # And prompt them for the branch
