@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "=========== Script Starts =========="
+
 # First check if the directory is a git repo
 repo_check=$(git status 2>&1 /dev/null | grep 'Not a git repository')
 if [ -n "$repo_check" ]
@@ -34,7 +36,7 @@ function push {
 	read -p "Do you want to push to a remote branch? [y/n]: " pushOption
 	case $pushOption in
 	  [Yy]* ) read -e -p "Enter name of branch: " branch;;
-	  [Nn]* ) exit 0;;
+	  [Nn]* ) echo "=========== Script Ends ==========";exit 0;;
 	esac
 	
 	if [ -z "$branch" ]
@@ -42,6 +44,7 @@ function push {
 		push
 	else
 		git push origin "$branch"
+		echo "=========== Script Ends =========="
 	fi
 }
 
